@@ -56,7 +56,7 @@ def write_event(topic):
   return event_json
 
 @task
-def generate_events(ctx, topic_name, nr_events=0):
+def generate_events(topic_name, nr_events=0):
   """
   Load demo data with python generator script for SimpleEvents
   """
@@ -74,14 +74,14 @@ def generate_events(ctx, topic_name, nr_events=0):
       cnt += 1
 
 @task
-def build_project(ctx):
+def build_project():
   """
   Build gcp-dataflow-example-project and package into "fat jar" ready for Dataflow deploy
   """
   run("sbt assembly", pty=True)
 
 @task
-def create_bigtable_table(ctx, region="us-west1-a", instance_id="test-instance", table_name="test-table", column_family="cf1"):
+def create_bigtable_table(region="us-west1-a", instance_id="test-instance", table_name="test-table", column_family="cf1"):
   """
   Cloud Bigtable table (and instance) creation. Check the full docstring for details!
   Setting display_name to the same as the instance_id by default. Assuming non-existent instance!
@@ -95,7 +95,7 @@ def create_bigtable_table(ctx, region="us-west1-a", instance_id="test-instance",
   column_family.create()
 
 @task
-def create_pubsub_topic(ctx, topic_name):
+def create_pubsub_topic(topic_name):
   """
   Create our pubsub topic
   """
@@ -106,7 +106,7 @@ def create_pubsub_topic(ctx, topic_name):
   assert topic.exists()
 
 @task
-def run_project(ctx, config, fat_jar_path=JAR_FILE):
+def run_project(config, fat_jar_path=JAR_FILE):
   """
   Submits the compiled "fat jar" to Cloud Dataflow and starts Cloud Dataflow based on project settings
   """
